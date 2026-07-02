@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Devynt</title>
+  <meta name="description" content="Contactez Devynt pour un devis ou une question sur votre projet web." />
+  <link rel="icon" type="image/png" href="assets/brand/logo.png" />
+  <link rel="canonical" href="https://devynt.fr/contact.html" />
+  <meta name="theme-color" content="#1f7ad6" />
+  <meta name="author" content="Devynt" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Devynt" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:title" content="Contact — Devynt" />
+  <meta property="og:description" content="Contactez Devynt pour un devis ou une question sur votre projet web : site vitrine, refonte, boutique ou outil sur mesure." />
+  <meta property="og:url" content="https://devynt.fr/contact.html" />
+  <meta property="og:image" content="https://devynt.fr/assets/brand/logo.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Contact — Devynt" />
+  <meta name="twitter:description" content="Contactez Devynt pour un devis ou une question sur votre projet web : site vitrine, refonte, boutique ou outil sur mesure." />
+  <meta name="twitter:image" content="https://devynt.fr/assets/brand/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="contact">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="hero__eyebrow">Contact</p>
+        <h1 class="page-hero__title">Parlons de <span class="accent">votre projet</span>.</h1>
+        <p class="page-hero__lead">Décrivez votre besoin — site vitrine, refonte, boutique en ligne ou outil sur mesure. Je vous réponds rapidement.</p>
+      </div>
+    </section>
+
+    <section class="section section--alt">
+      <div class="container contact-wrap">
+        <div class="contact-info">
+          <div class="contact-info__block reveal">
+            <strong>E-mail</strong>
+            <a href="mailto:contact.devynt@gmail.com" id="contactEmail">contact.devynt@gmail.com</a>
+          </div>
+          <div class="contact-info__block reveal">
+            <strong>Localisation</strong>
+            <span id="contactLocation">France</span>
+          </div>
+          <div class="contact-info__block reveal">
+            <strong>LinkedIn</strong>
+            <a href="https://www.linkedin.com/in/kilian-devynt" target="_blank" rel="noopener">Profil Kilian — Devynt</a>
+          </div>
+          <div class="contact-info__block reveal">
+            <strong>Délai de réponse</strong>
+            <span>Sous 48 h en semaine</span>
+          </div>
+        </div>
+
+        <form class="form reveal" id="contactForm">
+          <label>Nom complet<input type="text" name="name" required placeholder="Votre nom" /></label>
+          <label>E-mail<input type="email" name="email" required placeholder="vous@exemple.fr" /></label>
+          <label>Téléphone<input type="tel" name="phone" placeholder="06 00 00 00 00" /></label>
+          <label>Type de projet
+            <select name="project">
+              <option value="">— Choisir —</option>
+              <option>Site vitrine</option>
+              <option>Boutique en ligne</option>
+              <option>Refonte de site existant</option>
+              <option>Outil sur mesure</option>
+              <option>Autre</option>
+            </select>
+          </label>
+          <label>Votre message<textarea name="message" required placeholder="Décrivez votre activité et ce que vous recherchez…"></textarea></label>
+          <button type="submit" class="btn btn--primary">Envoyer ma demande</button>
+          <p class="form__feedback" id="contactFeedback" hidden></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
