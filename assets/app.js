@@ -9,6 +9,9 @@ const SITE = {
   phone: "",
   location: "France",
   siteUrl: "https://devynt.fr",
+  // Envoi du formulaire via FormSubmit.co (aucune inscription).
+  // Le 1er envoi déclenche un e-mail d'activation à valider une seule fois.
+  formEndpoint: "https://formsubmit.co/ajax/contact.devynt@gmail.com",
   topbar: "Création de sites web pour professionnels & indépendants",
   social: {
     instagram: "",
@@ -136,6 +139,10 @@ function footerHTML() {
     </div>
     <div class="container footer__bottom">
       <span>© ${new Date().getFullYear()} ${esc(SITE.name)} — Tous droits réservés</span>
+      <span class="footer__legal">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="confidentialite.html">Politique de confidentialité</a>
+      </span>
     </div>
   </footer>`;
 }
@@ -226,17 +233,61 @@ function initContactForm() {
   const form = document.getElementById("contactForm");
   const feedback = document.getElementById("contactFeedback");
   if (!form) return;
-  form.addEventListener("submit", (e) => {
+
+  const showFeedback = (msg, ok) => {
+    if (!feedback) return;
+    feedback.textContent = msg;
+    feedback.hidden = false;
+    feedback.classList.toggle("form__feedback--ok", !!ok);
+    feedback.classList.toggle("form__feedback--error", !ok);
+  };
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(form));
-    const subject = encodeURIComponent(`Demande Devynt — ${data.name}`);
-    const body = encodeURIComponent(
-      `Nom : ${data.name}\nE-mail : ${data.email}\nTéléphone : ${data.phone || "—"}\nProjet : ${data.project || "—"}\n\nMessage :\n${data.message}`
-    );
-    window.location.href = `mailto:${SITE.email}?subject=${subject}&body=${body}`;
-    if (feedback) {
-      feedback.textContent = "Votre client mail va s'ouvrir. Envoyez le message pour finaliser votre demande.";
-      feedback.hidden = false;
+
+    if (!SITE.formEndpoint) {
+      const subject = encodeURIComponent(`Demande Devynt — ${data.name}`);
+      const body = encodeURIComponent(
+        `Nom : ${data.name}\nE-mail : ${data.email}\nTéléphone : ${data.phone || "—"}\nProjet : ${data.project || "—"}\n\nMessage :\n${data.message}`
+      );
+      window.location.href = `mailto:${SITE.email}?subject=${subject}&body=${body}`;
+      showFeedback("Votre client mail va s'ouvrir. Envoyez le message pour finaliser votre demande.", true);
+      return;
+    }
+
+    const btn = form.querySelector('button[type="submit"]');
+    const btnLabel = btn ? btn.textContent : "";
+    if (btn) { btn.disabled = true; btn.textContent = "Envoi en cours…"; }
+    showFeedback("Envoi de votre message…", true);
+
+    const payload = {
+      _subject: `Demande Devynt — ${data.name}`,
+      _template: "table",
+      name: data.name,
+      email: data.email,
+      phone: data.phone || "—",
+      project: data.project || "—",
+      message: data.message,
+    };
+
+    try {
+      const res = await fetch(SITE.formEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json();
+      if (res.ok && (json.success === "true" || json.success === true)) {
+        form.reset();
+        showFeedback("Merci ! Votre message a bien été envoyé. Je vous réponds sous 48 h.", true);
+      } else {
+        throw new Error(json.message || "Erreur d'envoi");
+      }
+    } catch (err) {
+      showFeedback("Une erreur est survenue. Réessayez ou écrivez-moi directement à " + SITE.email + ".", false);
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = btnLabel; }
     }
   });
 }
